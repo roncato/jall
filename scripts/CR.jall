@@ -1,0 +1,40 @@
+double var1 = 0;
+function int objectiveFunction(double snrVar)
+{
+	int result = 0;
+	if (snrVar <= 15 & snrVar >= 10) {
+		result = 2;
+	}
+	else {
+		result = 5;
+	}
+	return result;
+}
+struct Policies
+{
+		
+	Rule CheckPerformance { 
+		SNR(?x) & (?x <= 15) & (?x >= 10) => Performance(Acceptable)
+	};
+	
+	Rule Act {
+		Performance(Acceptable) => DoSomething
+	};
+	
+};
+struct Facts
+{
+	Fact SNR(var1);
+};
+struct Domain
+{
+	Policies p;
+	Facts f;
+	function Domain()
+	{
+		this.p = new Policies();
+		this.f = new Facts();
+	};
+};
+Domain d = new Domain();
+runRadio(d, objectiveFunction);

@@ -1,0 +1,76 @@
+/*
+Copyright (c) 2013 Lucas Batista
+All rights reserved.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL LUCAS BATISTA BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
+// Declares domain. This structure should contain the rules and/or ground knowledge of the domain
+struct Domain
+{
+	
+	Fact WorksIn(PurchaseDept, Mario);
+	
+	Rule R1 { 
+		WorksIn(?x, ?y) & Manager(?x, ?z) => BossOf(?y, ?z)
+	};
+
+};
+
+// Declares facts. This structure should contain the facts of the case
+struct Facts
+{
+	
+	Fact WorksIn(PurchaseDept, PaulMarley);
+	Fact WorksIn(PurchaseDept, JoeSmith);
+	Fact Manager(PurchaseDept, JohnJones);
+	
+};
+
+// Declare Queries. This should contain predicate sentences with queries
+struct Queries
+{
+	Sentence q1 {
+		BossOf(?y, JohnJones)
+	};
+	Sentence q2 {
+		BossOf(?y, ?z)
+	};
+	Sentence q3 {
+		WorksIn(PurchaseDept, ?p)
+	};
+	Sentence q4 {
+		Manager(PurchaseDept, ?p)
+	};
+	// Thie will return empty theta 'NIL' which is valid answer (true)
+	Sentence q5 {
+		BossOf(JoeSmith, JohnJones)
+	};
+	// This will not have a theta
+	Sentence q6 {
+		BossOf(PurchaseDept, ?x)
+	}
+};
+
+// Instantiates each object
+Domain domain 	= new Domain();
+Facts facts		= new Facts();
+Queries queries = new Queries();
+
+// Runs inference engine
+object[] answers = reason(domain, facts, queries);
+
+// Prints responses
+for (int i = 0; i < arrayLen(answers); i = i+1)
+{
+	println(toString(answers[i]));
+}

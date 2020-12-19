@@ -1,0 +1,236 @@
+/*
+Copyright (c) 2013 Lucas Batista
+All rights reserved.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL LUCAS BATISTA BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
+// String literal declaration (and assignment);
+string hello = 'Hello "World"!';
+println(hello);
+
+// Constangs
+final string CONSTANT = "HELLOWORLD";
+println(CONSTANT);
+
+// User defined functions
+function void myFunction()
+{
+	string ref1;
+	ref1 = "Jall's awesome!";
+	println(ref1);
+}
+
+function void myFunction2()
+{
+	return;
+	println("Should not print.");
+}
+
+function double max2(int ref1, int ref2)
+{
+	int result = ref2;
+	if (ref1 > ref2)
+	{
+		result = ref1;
+	}
+	return result;
+}
+
+// Recursion
+function int factorial(int x)
+{
+	if (x <= 1)
+	{
+		return 1;
+	}
+	return x * factorial(x-1);
+}
+
+// Call command
+myFunction();
+myFunction2();
+println(factorial(5));
+
+// Dynamic call
+object[] factor = new object[1];
+factor[0] = 6;
+int fact = call("factorial", factor);
+println(fact);
+
+// Operator precedence
+println(7+8*3);
+println(7*8+3);
+
+// For loop
+for(int i = 0; i < 10; i = i+1)
+{
+	// Nested loop
+	for(int j = 0; j < 5; j = j+1)
+	{
+		// Concatenation
+		println(i + ", " + j);
+	}
+}
+
+// While loop 1
+int i = 0;
+while(i < 10)
+{
+	i = i + 1;
+	// Call expressions
+	println(max2(i, i+1*2));
+}
+
+// While loop 2
+i = 0;
+while(true)
+{
+	// Standard functions
+	print(max(i, i-1));
+	
+	// Conditionals
+	if (i == 10)
+	{
+		// break;
+		break;
+	}
+	else if (i > 10)
+	{
+		println("This invalid model can be detected statically with temporal logic.");
+	}
+	else
+	{
+		i = i + 1;
+	}
+}
+
+println("");
+
+// Structures
+struct Point
+{
+	int x;
+	int y;
+} p;
+
+p = new Point();
+
+println("(" + p.x + ", " + p.y + ")");
+
+struct Manager
+{
+	string name;
+	string lastName;
+	
+	function Manager(string name, string lastName)
+	{
+		this.name = name;
+		this.lastName = lastName;
+	};
+	
+	function string getName()
+	{
+		return name;
+	};
+	
+	function string getFullName()
+	{
+		return name + " " + lastName;
+	};
+	
+	function void printFullName()
+	{
+		println(name + " " + lastName);
+	};
+	
+	function void setName(string name)
+	{
+		this.name = name;
+	};
+	
+};
+
+struct Total
+{
+	
+	double sales;
+	double throughput;
+	// Nested
+	Manager manager;
+	
+	function Total()
+	{
+		manager = new Manager("Lucas", "Batista");
+	};
+	
+	function Manager getManager()
+	{
+		return manager;
+	};
+	
+};
+
+
+Total total 		= new Total();
+total.sales 		= 100.00;
+total.throughput 	= 512.00;
+
+println("Total Sales: $" + total.sales);
+println("Total Throughput: " + total.throughput);
+
+// Multi level dereference
+total.getManager().name 		= "Lucas";
+total.manager.lastName 	= "Batista";
+println(total.manager.getName() + " " + total.manager.lastName);
+
+// Arrays (may be multi-dimentional);
+int[][][] array;
+array = new int[1][2][3];
+
+println(array[0][1][2]);
+
+array[0][1][2] = 2;
+
+println(array[0][1][2]+1);
+
+// Array of structures
+Manager[] managers = new Manager[5];
+
+for (int i = 0; i < 5; i = i+1)
+{
+	managers[i] 			= new Manager("Name" + i, "LastName" + i);
+}
+
+for (int i = 0; i < 5; i = i+1)
+{
+	println(managers[i].name + " " + managers[i].lastName);
+}
+
+Manager[] managers2 = clone(managers);
+
+// Constructors
+Manager manager = new Manager("Lucas", "Batista");
+println(manager.getFullName());
+
+// Procedure calls
+manager.setName("Thiago");
+manager.printFullName();
+
+// Array functions
+arrayAdd(managers, manager);
+arrayInsertAt(managers, manager, 2);
+arrayDeleteAt(managers, 2);
+arrayClear(managers);
+
+// Dynamic call
+callMethod(total.getManager(), "printFullName", null);
